@@ -5,6 +5,38 @@ build/
 dist/
 wheels/
 *.egg-info
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+htmlcov/
 
 # Virtual environments
 .venv
+.env
+.env.*
+!.env.example
+
+# Jupyter
+.ipynb_checkpoints/
+
+# IDE / OS
+.DS_Store
+.vscode/
+.idea/
+
+# Logs
+*.log
+
+# RAG generated data artifacts
+data/raw/**
+!data/raw/.gitkeep
+data/processed/**
+!data/processed/.gitkeep
+data/chunks/**
+!data/chunks/.gitkeep
+data/embeddings/**
+!data/embeddings/.gitkeep
+data/vector_store/**
+!data/vector_store/.gitkeep
