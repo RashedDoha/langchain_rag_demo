@@ -1,0 +1,7 @@
+Use the following retrieved context to answer the question.
+
+Context:
+{context}
+
+Question:
+{question}
