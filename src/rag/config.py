@@ -24,6 +24,13 @@ class Settings:
     chunk_overlap: int
     chunk_separators: tuple[str, ...]
     rag_llm_model: str
+    # Retrieval
+    retrieval_k: int
+    retrieval_k_fetch: int
+    enable_reranking: bool
+    reranker_model: str
+    enable_hybrid_search: bool
+    hybrid_bm25_weight: float
 
 
 def get_settings() -> Settings:
@@ -37,12 +44,22 @@ def get_settings() -> Settings:
     return Settings(
         data_dir=data_dir,
         chroma_collection_name=os.getenv("RAG_CHROMA_COLLECTION", "rag_collection"),
+        # Upgraded from all-MiniLM-L6-v2 for better retrieval recall
         embedding_model_name=os.getenv(
             "RAG_EMBEDDING_MODEL",
-            "sentence-transformers/all-MiniLM-L6-v2",
+            "BAAI/bge-base-en-v1.5",
         ),
         chunk_size=int(os.getenv("RAG_CHUNK_SIZE", "1000")),
         chunk_overlap=int(os.getenv("RAG_CHUNK_OVERLAP", "200")),
         chunk_separators=chunk_separators,
-        rag_llm_model=os.getenv("RAG_LLM_MODEL", "anthropic:claude-sonnet-4-6"),
+        rag_llm_model=os.getenv("RAG_LLM_MODEL", "anthropic:claude-sonnet-4-5"),
+        # Retrieval: fetch k_fetch candidates, rerank down to k
+        retrieval_k=int(os.getenv("RAG_RETRIEVAL_K", "3")),
+        retrieval_k_fetch=int(os.getenv("RAG_RETRIEVAL_K_FETCH", "10")),
+        enable_reranking=os.getenv("RAG_ENABLE_RERANKING", "true").lower() == "true",
+        reranker_model=os.getenv(
+            "RAG_RERANKER_MODEL", "cross-encoder/ms-marco-MiniLM-L-6-v2"
+        ),
+        enable_hybrid_search=os.getenv("RAG_ENABLE_HYBRID_SEARCH", "true").lower() == "true",
+        hybrid_bm25_weight=float(os.getenv("RAG_HYBRID_BM25_WEIGHT", "0.5")),
     )
